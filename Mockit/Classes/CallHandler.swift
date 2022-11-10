@@ -41,6 +41,10 @@ public protocol CallHandler {
   func getArgs(callOrder order: Int)
 
   @discardableResult
+  func acceptArrayed(_ returnValue: Any?, ofFunction function: String, atFile file: String,
+                       inLine line: Int, withArgs args: [Any?]) -> Any?
+
+  @discardableResult
   func accept(_ returnValue: Any?, ofFunction function: String, atFile file: String,
                      inLine line: Int, withArgs args: Any?...) -> Any?
 

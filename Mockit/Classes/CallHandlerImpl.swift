@@ -102,6 +102,34 @@ open class CallHandlerImpl: CallHandler {
 
     return returnValue
   }
+    
+
+    @discardableResult
+    open func acceptArrayed(_ returnValue: Any?, ofFunction function: String, atFile file: String,
+                       inLine line: Int, withArgs args: [Any?]) -> Any? {
+      switch state {
+        case .none:
+          recordCallHistory(ofFunction: function, withArgs: args)
+
+          if stubCalled(ofFunction: function, withArgs: args) {
+              return stub.performActions()
+          }
+        case .when:
+          registerStub(ofFunction: function, withArgs: args)
+
+          transtion(toState: .none)
+        case .verify:
+          verifyCall(ofFunction: function, atFile: file, inLine: line)
+
+          transtion(toState: .none)
+        case .getArgs:
+          assignArguments(ofFunction: function)
+
+          transtion(toState: .none)
+      }
+
+      return returnValue
+    }
 
   fileprivate func transtion(toState state: State) {
     self.state = state

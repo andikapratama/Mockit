@@ -30,6 +30,12 @@ import Mockit
 
 
 class TestCallHandler: CallHandler {
+  func acceptArrayed(_ returnValue: Any?, ofFunction function: String, atFile file: String, inLine line: Int, withArgs args: [Any?]) -> Any? {
+      argumentsOfSpecificCall = args
+
+      return returnValue
+  }
+    
 
   var argumentsOfSpecificCall: [Any?]?
 
